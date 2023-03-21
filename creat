@@ -1,0 +1,75 @@
+from src.data.search import *
+
+from flask import Flask, url_for, redirect, jsonify, request
+
+ 
+
+app = Flask(__name__)
+
+ 
+
+@app. route("/")
+
+def redirect():
+
+     return redirect(url_for("searchComic"))
+
+ 
+
+@app.route("/api/comics/",methods=["POST","GET"])
+
+def search Comics():
+
+     if request. method=="GET":
+
+         key = request.args.get("title")
+
+         if(keys):
+
+             req = main.request("https://data.komiku.id/cari/?post_type=manga&s="+key)
+
+             if(req['search-result']!=0):
+
+                 return jsonify(req)
+
+             else:
+
+                 return jsonify(
+
+                     {
+
+                         "error":"No search results found"
+
+                     }
+
+                 )
+
+         else:
+
+             return jsonify(
+
+                 {
+
+                     "error":"untitled please input title! example: /api/comic/?title=immortal+king '+' replace space"
+
+                 }
+
+             )
+
+     else:
+
+         return jsonify(
+
+             {
+
+                 "error":"please use GET method"
+
+             }
+
+         )
+
+ 
+
+if __name__=="__main__":
+
+     app. run(debug=True)
